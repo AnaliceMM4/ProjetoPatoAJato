@@ -1,0 +1,57 @@
+const int sensorPin = A0;  // Esse é o pino do Arduino que irá ler a saída do sensor
+float valorSensor;        // Essa variável irá ser usada para armazenar o input do sensor
+float temperaturaC;        // Variável que será usada para armazenar a temperatura em graus
+
+void setup() {
+  
+  pinMode(sensorPin, INPUT);  // Declare o tipo de pino que está conectado na placa
+  Serial.begin(9600);         // Inicialize a comunicação serial em 9600 bits por segundo
+  
+}
+
+void loop() {
+  
+  valorSensor = analogRead(sensorPin);    // Le o sensor analógico e armazena seu valor
+  temperaturaC = valorSensor / 1024;       // Encontrando a porcentagem da leitura de input
+  temperaturaC = temperaturaC * 5;          // Multiplica por 5V para obter a tensão
+  temperaturaC = temperaturaC - 0.5;        // Subtrai o deslocamento  
+  temperaturaC = temperaturaC * 100;        // Converte em graus Celsius
+
+ 
+  Serial.print("Temperatura atual (°C): ");  // Printando em graus Celsius
+  Serial.println(temperaturaC);
+  delay(1000);                               // Uma pequena pausa para não exibir dados errados
+  
+  if(temperaturaC>110)
+  {
+    //FAZ ALGUMA COISA PRA ESFRIAR
+    
+    do
+    {
+    	Serial.print("TEMPERATURA ALTA(°C): ");
+      	Serial.println(temperaturaC);
+      	delay(1000);
+        valorSensor = analogRead(sensorPin);    
+        temperaturaC = valorSensor / 1024;       
+        temperaturaC = temperaturaC * 5;          
+        temperaturaC = temperaturaC - 0.5;
+        temperaturaC = temperaturaC * 100;
+    }while(temperaturaC>110);
+  }
+  if(temperaturaC<80)
+  {
+    //FAZ ALGUMA COISA PRA ESQUENTAR
+    
+  	do
+    {
+    	Serial.print("TEMPERATURA BAIXA(°C): ");
+      	Serial.println(temperaturaC);
+      	delay(1000);
+        valorSensor = analogRead(sensorPin);    
+        temperaturaC = valorSensor / 1024;       
+        temperaturaC = temperaturaC * 5;          
+        temperaturaC = temperaturaC - 0.5;
+        temperaturaC = temperaturaC * 100;
+    }while(temperaturaC<80);
+  }
+}
